@@ -3,27 +3,31 @@ package com.graey.spring_web;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
 
     @RequestMapping("/")
     public String home() {
-        return "index.jsp";
+        return "index";
     }
 
     @RequestMapping("add")
-    public String add(HttpServletRequest req, HttpSession session) {
-        int numOne = Integer.parseInt(req.getParameter("num1"));
-        int numTwo = Integer.parseInt(req.getParameter("num2"));
-
+    public ModelAndView add(@RequestParam("num1") int numOne, @RequestParam("num2") int numTwo, HttpServletRequest req, ModelAndView mv) {
         int result = numOne + numTwo;
 
-        session.setAttribute("result", result);
+        mv.addObject("result", result);
 
-//        System.out.println(result);
+        mv.setViewName("result");
+        return mv;
+    }
 
-        return "result.jsp";
+    @RequestMapping("addAlien")
+    public String addAlien(Alien alien, ModelAndView mv) {
+        return "result";
     }
 }
